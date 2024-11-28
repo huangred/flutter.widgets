@@ -31,12 +31,14 @@ class VisibilityDetector extends SingleChildRenderObjectWidget {
     required Key key,
     required Widget child,
     required this.onVisibilityChanged,
+    required this.onPositionChanged
   })  : assert(key != null),
         assert(child != null),
         super(key: key, child: child);
 
   /// The callback to invoke when this widget's visibility changes.
   final VisibilityChangedCallback? onVisibilityChanged;
+  final PositionChangedCallback? onPositionChanged;
 
   /// See [RenderObjectWidget.createRenderObject].
   @override
@@ -52,6 +54,7 @@ class VisibilityDetector extends SingleChildRenderObjectWidget {
   void updateRenderObject(
       BuildContext context, RenderVisibilityDetector renderObject) {
     assert(renderObject.key == key);
+    onPositionChanged?.call(renderObject.localToGlobal(Offset.zero), renderObject.size);
     renderObject.onVisibilityChanged = onVisibilityChanged;
   }
 }
@@ -94,6 +97,8 @@ class SliverVisibilityDetector extends SingleChildRenderObjectWidget {
 }
 
 typedef VisibilityChangedCallback = void Function(VisibilityInfo info);
+
+typedef PositionChangedCallback = void Function(Offset offset, Size size);
 
 /// Data passed to the [VisibilityDetector.onVisibilityChanged] callback.
 @immutable

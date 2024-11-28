@@ -31,7 +31,7 @@ class VisibilityDetector extends SingleChildRenderObjectWidget {
     required Key key,
     required Widget child,
     required this.onVisibilityChanged,
-    required this.onPositionChanged
+    this.onPositionChanged
   })  : assert(key != null),
         assert(child != null),
         super(key: key, child: child);
